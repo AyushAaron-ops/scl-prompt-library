@@ -1,0 +1,97 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --sidebar-width: 256px;
+  --header-height: 64px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-slate-50 text-slate-900 antialiased;
+  font-feature-settings: "cv11", "ss01";
+}
+
+.dark body {
+  @apply bg-gray-950 text-slate-100;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 rounded-full;
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-400;
+}
+.dark ::-webkit-scrollbar-thumb {
+  @apply bg-slate-600;
+}
+
+/* Sidebar transition */
+.sidebar-collapse-enter {
+  max-height: 0;
+  overflow: hidden;
+}
+.sidebar-collapse-enter-active {
+  max-height: 500px;
+  transition: max-height 0.25s ease-out;
+}
+.sidebar-collapse-exit {
+  max-height: 500px;
+  overflow: hidden;
+}
+.sidebar-collapse-exit-active {
+  max-height: 0;
+  transition: max-height 0.2s ease-in;
+}
+
+/* Prompt card */
+.prompt-card {
+  @apply bg-white border border-slate-200 rounded-xl transition-all duration-200 cursor-pointer;
+  &:hover {
+    @apply shadow-lg border-brand-300 -translate-y-0.5;
+  }
+}
+.dark .prompt-card {
+  @apply bg-gray-800 border-gray-700;
+  &:hover {
+    @apply shadow-xl border-brand-500;
+  }
+}
+
+/* Toast animations */
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(100%); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes toastOut {
+  from { opacity: 1; transform: translateX(0); }
+  to { opacity: 0; transform: translateX(100%); }
+}
+
+.toast-enter {
+  animation: toastIn 0.25s ease-out forwards;
+}
+.toast-exit {
+  animation: toastOut 0.2s ease-in forwards;
+}
+
+/* Focus ring */
+*:focus-visible {
+  @apply outline-none ring-2 ring-brand-500 ring-offset-2;
+}
