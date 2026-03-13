@@ -5,8 +5,7 @@ import { X, Search, BookOpen, Clock, ArrowRight } from 'lucide-react';
 import { Skeleton } from '../ui/Skeleton';
 
 const GEMINI_ENDPOINT =
-  'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
-
+  'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
 const RECENT_KEY = 'scl_dict_recent';
 
 interface DictResult {
