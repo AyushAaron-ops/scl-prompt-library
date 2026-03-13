@@ -6,6 +6,7 @@ import { Skeleton } from '../ui/Skeleton';
 
 const GEMINI_ENDPOINT =
   'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+
 const RECENT_KEY = 'scl_dict_recent';
 
 interface DictResult {
@@ -32,9 +33,7 @@ export function DictionaryDrawer({ isOpen, onClose }: DictionaryDrawerProps) {
     }
   });
 
-  const [apiKey, setApiKey] = useState<string>(
-  () => localStorage.getItem('scl_gemini_key') ?? ''
-  );
+  const apiKey = (import.meta as unknown as { env: Record<string, string> }).env.VITE_GEMINI_API_KEY as string | undefined;
 
   const saveRecent = (term: string) => {
     const updated = [term, ...recentSearches.filter((r) => r !== term)].slice(0, 10);
@@ -133,6 +132,7 @@ Term to define: ${term}`,
               leaveFrom="translate-x-0" leaveTo="translate-x-full"
             >
               <Dialog.Panel className="w-[420px] max-w-full bg-white dark:bg-gray-900 h-full flex flex-col shadow-2xl">
+
                 {/* Header */}
                 <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200 dark:border-gray-700">
                   <div className="flex items-center gap-2">
@@ -149,29 +149,6 @@ Term to define: ${term}`,
                     <X className="w-5 h-5" />
                   </button>
                 </div>
-                {(!apiKey || apiKey === 'your_gemini_api_key_here') && (
-  <div className="px-5 py-3 bg-amber-50 dark:bg-amber-900/20 border-b border-amber-200 dark:border-amber-800">
-    <p className="text-xs font-semibold text-amber-800 dark:text-amber-300 mb-1.5">
-      Enter your free Gemini API key to enable the dictionary
-    </p>
-    <div className="flex gap-2">
-      <input
-        type="password"
-        placeholder="AIza..."
-        className="flex-1 px-2.5 py-1.5 text-xs border border-amber-300 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-amber-400"
-        onBlur={(e) => {
-          const val = e.target.value.trim();
-          if (val) {
-            setApiKey(val);
-            localStorage.setItem('scl_gemini_key', val);
-          }
-        }}
-      />
-      
-        <a href="https://aistudio.google.com/apikey" target="_blank" rel="noreferrer" className="px-2.5 py-1.5 text-xs font-medium text-amber-700 dark:text-amber-300 border border-amber-300 rounded-lg hover:bg-amber-100 transition-colors whitespace-nowrap">Get free key</a>
-    </div>
-  </div>
-)}
 
                 {/* Search */}
                 <form onSubmit={handleSubmit} className="px-5 py-4 border-b border-slate-100 dark:border-gray-700">
@@ -218,7 +195,7 @@ Term to define: ${term}`,
                   ) : error === 'fetch_error' ? (
                     <div className="rounded-xl border border-red-200 bg-red-50 dark:bg-red-900/20 dark:border-red-800 p-4">
                       <p className="text-sm font-medium text-red-700 dark:text-red-400">Unable to retrieve definition</p>
-                      <p className="text-xs text-red-600 dark:text-red-500 mt-1">Check your API key in <code className="font-mono">.env</code> and ensure it has Gemini access.</p>
+                      <p className="text-xs text-red-600 dark:text-red-500 mt-1">Check your API key in Vercel environment variables and ensure it has Gemini access.</p>
                     </div>
                   ) : result ? (
                     <div className="animate-fade-in">
@@ -265,10 +242,11 @@ Term to define: ${term}`,
                     <div className="text-center py-12">
                       <BookOpen className="w-12 h-12 text-slate-300 dark:text-gray-600 mx-auto mb-3" />
                       <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Search any supply chain term</p>
-                      <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">Powered by Gemini 2.5 Pro</p>
+                      <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">Powered by Gemini</p>
                     </div>
                   )}
                 </div>
+
               </Dialog.Panel>
             </Transition.Child>
           </div>
